@@ -1,0 +1,38 @@
+#include<iostream>
+#define N 1000
+using namespace std;
+
+int n,m,d,cp=0,cw=0,msu=0;
+int c[N][N],w[N][N];//存储重量价格
+
+void backtrack(int i){//递归函数backteack 形式参数i表示递归深度
+	if(i>n){    //cp>d，超过了价格上限
+       if(cw<sum)//cw>=sum,不是最优解
+         sum = cw;
+       return ;
+     }
+     for(int j=1;j<=m;j++){//for循环，选择（1<=j<=m）
+         cw+=w[i][j];
+         cp+=c[i][j];
+         if(cw<sum && cp<=d)
+           backtrack(i+1);
+         cw-=w[i][j];
+         cp-=c[i][j];
+     }
+}
+
+int main(){//调用backtrack函数，复杂度为O(n!)，时间复杂度一样
+    cin>>n>>m>>d;
+    for(int i=1;i<=n;i++){
+      for(int j=1;j<=m;j++)
+        cin>>c[i][j];
+      sum+=c[i][1];
+    }
+    for(int i=1;i<=n;i++)
+      for(int j=1;j<=m;j++)
+        cin>>w[i][j];
+    backtrack(1);
+    cout<<sum<<endl;
+    system("pause");//用sum记录最优解
+    return 0;
+}
